@@ -20,6 +20,7 @@ export interface IAccordionContext {
   accordionList: string[] | null;
   setAccordionList: React.Dispatch<React.SetStateAction<string[] | null>>;
   timeTransition?: ITimeTransition;
+  register: (accordionID: string) => void;
 }
 
 export const AccordionContext = createContext<IAccordionContext | null>(null);
@@ -41,6 +42,11 @@ export const AccordionProvider = ({
     string | undefined
   >(initialAccordionOpened);
 
+  const register = useCallback((accordionID: string) => {
+    if (accordionList?.includes(accordionID)) return;
+    setAccordionList((list) => [...(list || []), accordionID]);
+  }, []);
+
   const isActive = useCallback(
     (accordionID?: string) => accordionID === selectedAccordion,
     [selectedAccordion]
@@ -49,6 +55,7 @@ export const AccordionProvider = ({
   const contextValue = useMemo(
     () => ({
       isActive,
+      register,
       accordionList,
       timeTransition,
       setAccordionList,
@@ -56,6 +63,8 @@ export const AccordionProvider = ({
       setSelectedAccordion,
     }),
     [
+      isActive,
+      register,
       accordionList,
       timeTransition,
       setAccordionList,

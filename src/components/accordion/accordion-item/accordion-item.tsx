@@ -22,7 +22,7 @@ interface IChildren {
 export const AccordionItem = forwardRef<HTMLDivElement, IAccordionItem>(
   ({ children, referenceID, startOpened }: IAccordionItem, ref) => {
     const id = referenceID ? referenceID : useId();
-    const { setAccordionList, setSelectedAccordion } = useAccordion();
+    const { setSelectedAccordion, register } = useAccordion();
 
     const childrenWithProps = () => {
       if (Array.isArray(children)) {
@@ -41,15 +41,7 @@ export const AccordionItem = forwardRef<HTMLDivElement, IAccordionItem>(
       return children;
     };
 
-    useEffect(() => {
-      setAccordionList((list) => {
-        if (!list?.length) return [id];
-
-        if (list.includes(id)) return list;
-
-        return [...list, id];
-      });
-    }, [id]);
+    useEffect(() => register(id), [id]);
 
     useEffect(() => {
       if (!startOpened) return;
