@@ -1,0 +1,29 @@
+.accordion-header {
+  display: flex;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #efefef;
+  justify-content: space-between;
+  transition: ease background-color 0.15s;
+
+  &__content {
+    display: flex;
+  }
+
+  &__title {
+    span {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+  }
+
+  &__prefix-icon,
+  &__posfix-icon {
+    display: block;
+  }
+
+  &__is-active {
+    background-color: #ceead0;
+  }
+}

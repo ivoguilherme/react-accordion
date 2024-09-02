@@ -1,0 +1,15 @@
+.accordion-icon {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__prefix {
+    margin-right: 16px;
+  }
+
+  &__posfix {
+    margin-left: 16px;
+  }
+}

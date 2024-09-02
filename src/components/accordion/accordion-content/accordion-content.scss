@@ -1,0 +1,19 @@
+.accordion-content {
+  opacity: 0;
+  overflow: hidden;
+  // transition: height ease 0.15s, opacity ease 0.3s;
+
+  &__internal {
+    padding: 8px;
+    margin-top: 4px;
+    border-radius: 4px;
+    border: 1px solid #cdcdcd;
+  }
+
+  &__is-active {
+    opacity: 1;
+
+    .accordion-content__internal {
+    }
+  }
+}
