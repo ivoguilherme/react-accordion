@@ -1,7 +1,7 @@
 import { PropsWithChildren } from "react";
 import {
   AccordionProvider,
-  IAccordionProvider,
+  IAccordionContext,
 } from "../../providers/accordion.provider";
 import { AccordionHeader } from "./accordion-header/accordion-header";
 import { AccordionItem } from "./accordion-item/accordion-item";
@@ -11,12 +11,12 @@ import { AccordionContent } from "./accordion-content/accordion-content";
 import "./accordion.scss";
 
 interface AccordionProps extends PropsWithChildren {
-  providerValue?: IAccordionProvider;
+  providerValue?: IAccordionContext;
 }
 
 const Accordion = ({ children, providerValue }: AccordionProps) => {
   return (
-    <AccordionProvider {...providerValue}>
+    <AccordionProvider contextValue={providerValue}>
       <div className="accordion">{children}</div>
     </AccordionProvider>
   );

@@ -1,5 +1,24 @@
 .app {
+  display: flex;
+  margin: 32px auto;
+  width: fit-content;
+  justify-content: center;
+  flex-direction: column;
+
+  &__actions {
+    gap: 8px;
     display: flex;
-    margin: 32px auto;
+    margin-bottom: 48px;
     justify-content: center;
+
+    button {
+      border: 1px solid #ccc;
+      padding: 4px 8px;
+      border-radius: 4px;
+
+      &:active {
+        background-color: #bbbbbb;
+      }
+    }
+  }
 }

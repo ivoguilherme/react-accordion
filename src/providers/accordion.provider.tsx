@@ -1,17 +1,12 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, PropsWithChildren } from "react";
+import { useAccordionProvider } from "../hooks/use-accordion-provider";
 
 interface ITimeTransition {
   height?: number;
   opacity?: number;
 }
 
-export interface IAccordionContext {
+interface IAccordionContext {
   isActive: (accordionID?: string) => boolean;
   selectedAccordion?: string;
   setSelectedAccordion: React.Dispatch<
@@ -21,61 +16,43 @@ export interface IAccordionContext {
   setAccordionList: React.Dispatch<React.SetStateAction<string[] | null>>;
   timeTransition?: ITimeTransition;
   register: (accordionID: string) => void;
+  toggle: (accordionID: string, state?: "open" | "close") => void;
 }
 
-export const AccordionContext = createContext<IAccordionContext | null>(null);
-
-export interface IAccordionProvider extends PropsWithChildren {
-  initialAccordionOpened?: string;
-  timeTransition?: ITimeTransition;
+interface IAccordionProvider extends PropsWithChildren {
+  contextValue?: IAccordionContext;
 }
 
-export const AccordionProvider = ({
-  children,
-  initialAccordionOpened,
-  timeTransition,
-}: IAccordionProvider) => {
-  const [accordionList, setAccordionList] = useState<Array<string> | null>(
-    null
-  );
-  const [selectedAccordion, setSelectedAccordion] = useState<
-    string | undefined
-  >(initialAccordionOpened);
+const AccordionContext = createContext<IAccordionContext | null>(null);
 
-  const register = useCallback((accordionID: string) => {
-    if (accordionList?.includes(accordionID)) return;
-    setAccordionList((list) => [...(list || []), accordionID]);
-  }, []);
+const AccordionProvider = ({ children, contextValue }: IAccordionProvider) => {
+  const defaultsContextValue: IAccordionContext | undefined = contextValue
+    ? {
+        ...contextValue,
+        timeTransition: contextValue?.timeTransition
+          ? contextValue.timeTransition
+          : {
+              height: 150,
+              opacity: 600,
+            },
+      }
+    : undefined;
 
-  const isActive = useCallback(
-    (accordionID?: string) => accordionID === selectedAccordion,
-    [selectedAccordion]
-  );
-
-  const contextValue = useMemo(
-    () => ({
-      isActive,
-      register,
-      accordionList,
-      timeTransition,
-      setAccordionList,
-      selectedAccordion,
-      setSelectedAccordion,
-    }),
-    [
-      isActive,
-      register,
-      accordionList,
-      timeTransition,
-      setAccordionList,
-      selectedAccordion,
-      setSelectedAccordion,
-    ]
-  );
+  const selectedContextValue =
+    defaultsContextValue ||
+    useAccordionProvider({
+      timeTransition: {
+        height: 150,
+        opacity: 600,
+      },
+    });
 
   return (
-    <AccordionContext.Provider value={contextValue}>
+    <AccordionContext.Provider value={selectedContextValue}>
       {children}
     </AccordionContext.Provider>
   );
 };
+
+export type { ITimeTransition, IAccordionContext };
+export { AccordionContext, AccordionProvider };

@@ -1,5 +1,6 @@
 import "./App.scss";
 import { Accordion } from "./components/accordion/accordion";
+import { useAccordionProvider } from "./hooks/use-accordion-provider";
 
 const accordions = [
   {
@@ -18,17 +19,27 @@ const accordions = [
 ];
 
 function App() {
+  const accordionProvider = useAccordionProvider();
+
   return (
     <div className="app">
-      <Accordion
-        providerValue={{
-          initialAccordionOpened: "ac5",
-          timeTransition: {
-            height: 300,
-            opacity: 600,
-          },
-        }}
-      >
+      <div className="app__actions">
+        <button
+          onClick={() => accordionProvider.toggle(accordions[0].title, "open")}
+        >
+          Open First
+        </button>
+        <button
+          onClick={() => accordionProvider.toggle(accordions[0].title, "close")}
+        >
+          Close First
+        </button>
+        <button onClick={() => accordionProvider.toggle(accordions[0].title)}>
+          Toggle First
+        </button>
+      </div>
+
+      <Accordion providerValue={accordionProvider}>
         {accordions.map(({ title, content }) => (
           <Accordion.Item key={title} referenceID={title}>
             <Accordion.Header
